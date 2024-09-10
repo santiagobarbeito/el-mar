@@ -10,7 +10,8 @@ let delays = [];
 let numSources = 4;
 let reverb;
 let soundStarted = false; // Flag to check if sound has started
-let factor_difusion=0.02;
+let factor_difusion=0.2;
+let oscilacion_factor=15;
 
 function setup() {
   createCanvas(windowWidth, windowHeight);
@@ -36,7 +37,7 @@ function setup() {
 function draw() {
   if (soundStarted) {
     background(0);
-    frameRate(20);
+    frameRate(15);
     noStroke();
 
     // Update grid heights based on diffusion and oscillation
@@ -62,7 +63,7 @@ function draw() {
         square.azulidad = lerp(square.azulidad, averageHeight, diffusionFactor);
 
         // Oscillate heights with reduced amplitude
-        square.azulidad += 5 * sin(square.angle); // Reduced amplitude
+        square.azulidad += oscilacion_factor * sin(square.angle); // Reduced amplitude
         square.angle += square.speed;
 
         // Map height to color
