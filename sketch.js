@@ -1,7 +1,8 @@
+
 let gridSize; // Number of squares per side
 let grid = [];
 let squareSize; // Size of each square
-
+let pixl_squares=25;
 // Synthesizer variables
 let noiseGenerators = [];
 let filters = [];
@@ -9,6 +10,7 @@ let delays = [];
 let numSources = 4;
 let reverb;
 let soundStarted = false; // Flag to check if sound has started
+let factor_difusion=0.02;
 
 function setup() {
   createCanvas(windowWidth, windowHeight);
@@ -19,10 +21,10 @@ function setup() {
     grid[x] = [];
     for (let y = 0; y < gridSize; y++) {
       grid[x][y] = {
-        baseHeight: random(0, 255), // Initial height
+        baseHeight: random(155, 200), // Initial height
         azulidad: random(0, 255), // Current height
         angle: random(TWO_PI), // Initial angle for oscillation
-        speed: random(0.01, 0.05) // Speed of oscillation
+        speed: random(0.1, 0.5) // Speed of oscillation
       };
     }
   }
@@ -34,6 +36,7 @@ function setup() {
 function draw() {
   if (soundStarted) {
     background(0);
+    frameRate(20);
     noStroke();
 
     // Update grid heights based on diffusion and oscillation
@@ -55,7 +58,7 @@ function draw() {
 
         // Compute new height based on average of neighbors with smoothing factor
         let averageHeight = (sumHeight / count);
-        let diffusionFactor = 0.05555; // More gradual diffusion
+        let diffusionFactor = factor_difusion; // More gradual diffusion
         square.azulidad = lerp(square.azulidad, averageHeight, diffusionFactor);
 
         // Oscillate heights with reduced amplitude
@@ -97,7 +100,7 @@ function windowResized() {
 }
 
 function adjustGridSize() {
-  gridSize = int(width / 40); // Number of squares per side (40 pixels per square)
+  gridSize = int(width / pixl_squares); // Number of squares per side (40 pixels per square)
   squareSize = width / gridSize;
   
   // Reinitialize grid with random heights
@@ -109,7 +112,7 @@ function adjustGridSize() {
         baseHeight: random(0, 255), // Initial height
         azulidad: random(0, 255), // Current height
         angle: random(TWO_PI), // Initial angle for oscillation
-        speed: random(0.01, 0.05) // Speed of oscillation
+        speed: random(0.2, 0.5) // Speed of oscillation
       };
     }
   }
@@ -160,4 +163,3 @@ function displayStartScreen() {
   textAlign(CENTER, CENTER);
   text("Haz clic para comenzar", width / 2, height / 2);
 }
-
